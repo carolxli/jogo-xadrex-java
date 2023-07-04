@@ -1,6 +1,5 @@
 package xadrez;
-
-import tabuleiroJogo.Posicao;
+ 
 import tabuleiroJogo.Tabuleiro;
 import xadrez.pecas.Rei;
 import xadrez.pecas.Torre;
@@ -11,7 +10,7 @@ public class PartidaXadrez {
 		tabuleiro = new Tabuleiro(8, 8);
 		setupInicial();
 	}
-	public PecaXadrez[][] getPecas(){
+	public PecaXadrez[][] getPecas(){ 
 		PecaXadrez[][] mat = new PecaXadrez[tabuleiro.getQtdLinhas()][tabuleiro.getQtdColunas()];
 		for(int i=0;i<tabuleiro.getQtdLinhas();i++) {
 			for(int j=0;j<tabuleiro.getQtdColunas();j++) {
@@ -20,10 +19,22 @@ public class PartidaXadrez {
 		}
 		return mat;
 	}
-	
+	private void novoLocalPeca(char coluna, int linha, PecaXadrez peca) {
+		tabuleiro.localPeca(peca,new PosicaoXadrez(coluna, linha).toPosicao());
+	}
 	private void setupInicial() {
-		tabuleiro.localPeca(new Torre(tabuleiro, Cor.WHITE), new Posicao(2, 1));
-		tabuleiro.localPeca(new Rei(tabuleiro, Cor.BLACK), new Posicao(0, 4));
-		tabuleiro.localPeca(new Rei(tabuleiro, Cor.WHITE), new Posicao(7, 4));
+		novoLocalPeca('c', 1, new Torre(tabuleiro, Cor.WHITE));
+		novoLocalPeca('c', 2, new Torre(tabuleiro, Cor.WHITE));
+		novoLocalPeca('d', 2, new Torre(tabuleiro, Cor.WHITE));
+		novoLocalPeca('e', 2, new Torre(tabuleiro, Cor.WHITE));
+		novoLocalPeca('e', 1, new Torre(tabuleiro, Cor.WHITE));
+		novoLocalPeca('d', 1, new Rei(tabuleiro, Cor.WHITE));
+
+		novoLocalPeca('c', 7, new Torre(tabuleiro, Cor.BLACK));
+		novoLocalPeca('c', 8, new Torre(tabuleiro, Cor.BLACK));
+		novoLocalPeca('d', 7, new Torre(tabuleiro, Cor.BLACK));
+        novoLocalPeca('e', 7, new Torre(tabuleiro, Cor.BLACK));
+        novoLocalPeca('e', 8, new Torre(tabuleiro, Cor.BLACK));
+        novoLocalPeca('d', 8, new Rei(tabuleiro, Cor.BLACK));
 	}
 }
