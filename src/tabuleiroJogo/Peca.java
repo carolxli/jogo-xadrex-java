@@ -1,6 +1,6 @@
 package tabuleiroJogo;
 
-public class Peca {
+public abstract class Peca {
 	protected Posicao posicao;
 	private Tabuleiro tabuleiro;
 	public Peca(Tabuleiro tabuleiro) {
@@ -10,5 +10,10 @@ public class Peca {
 	protected Tabuleiro getTabuleiro() {
 		return tabuleiro;
 	}
+	public abstract boolean[][] movPossivel();
 	
-}
+	public boolean movPossivel(Posicao posicao) {
+		return movPossivel()[posicao.getLinha()][posicao.getColuna()];
+	}
+	
+} 
