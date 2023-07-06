@@ -15,4 +15,10 @@ public class Rei extends PecaXadrez{
 		return "R";
 	}
 
+	@Override
+	public boolean[][] movPossivel() {
+		boolean[][] mat = new boolean[getTabuleiro().getQtdLinhas()][getTabuleiro().getQtdColunas()];
+		return mat;
+	}
+
 }
