@@ -1,5 +1,6 @@
 package xadrez;
  
+
 import tabuleiroJogo.Peca;
 import tabuleiroJogo.Posicao;
 import tabuleiroJogo.Tabuleiro;
@@ -7,11 +8,25 @@ import xadrez.pecas.Rei;
 import xadrez.pecas.Torre;
 
 public class PartidaXadrez {
+	
+	private int turno;
+	private Cor jogadorAtual;
 	private Tabuleiro tabuleiro;
 	public PartidaXadrez() {
 		tabuleiro = new Tabuleiro(8, 8);
+		turno = 1;
+		jogadorAtual = Cor.WHITE;
 		setupInicial();
 	}
+	
+	public int getTurno() {
+		return turno;
+	}
+	
+	public Cor getJogadorAtual() {
+		return jogadorAtual;
+	}
+	
 	public PecaXadrez[][] getPecas(){ 
 		PecaXadrez[][] mat = new PecaXadrez[tabuleiro.getQtdLinhas()][tabuleiro.getQtdColunas()];
 		for(int i=0;i<tabuleiro.getQtdLinhas();i++) {
@@ -34,6 +49,7 @@ public class PartidaXadrez {
 		validaPosOrigem(origem);
 		validaPosDestino(origem,destino);
 		Peca captaPeca = movimentar(origem,destino);
+		proxTurno();
 		return (PecaXadrez)captaPeca;
 	}
 	
@@ -48,15 +64,24 @@ public class PartidaXadrez {
 		if(!tabuleiro.existePeca(posicao)) {
 			throw new XadrezException("Não existe peça na posição de origem!");
 		}
+		if(jogadorAtual != ((PecaXadrez)tabuleiro.peca(posicao)).getCor()) {
+			throw new XadrezException("A peã escolhida não é sua.");
+		}
 		if(!tabuleiro.peca(posicao).existeMovPossivel()) {
 			throw new XadrezException("Não existe movimentos possíveis para a peça escolhida");
 		}
+		
 	}
 	
 	private void validaPosDestino(Posicao origem, Posicao destino) {
 		if(!tabuleiro.peca(origem).movPossivel(destino)) {
 			throw new XadrezException("A peça escolhida não pode se mover para a posição de destino.");
 		}
+	}
+	
+	private void proxTurno() {
+		turno++;
+		jogadorAtual = (jogadorAtual == Cor.WHITE)? Cor.BLACK : Cor.WHITE;
 	}
 	
 	private void novoLocalPeca(char coluna, int linha, PecaXadrez peca) {
