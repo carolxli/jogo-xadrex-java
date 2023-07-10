@@ -17,6 +17,7 @@ public class PartidaXadrez {
 	private Cor jogadorAtual;
 	private Tabuleiro tabuleiro;
 	private boolean check;
+	private boolean checkMate;
 	private List<Peca> pecasTabuleiro = new ArrayList<>();
 	private List<Peca> pecasCapturadas = new ArrayList<>();
 	
@@ -38,6 +39,10 @@ public class PartidaXadrez {
 	
 	public boolean getCheck() {
 		return check;
+	}
+	
+	public boolean getCheckMate() {
+		return checkMate;
 	}
 	
 	public PecaXadrez[][] getPecas(){ 
@@ -67,7 +72,12 @@ public class PartidaXadrez {
 			throw new XadrezException("Você não pode se colocar em check!");
 		}
 		check = (testCheck(corOponente(jogadorAtual))) ? true : false;
-		proxTurno();
+		if(testCheckMate(corOponente(jogadorAtual))) {
+			checkMate = true;
+		}
+		else {
+			proxTurno();
+		}
 		return (PecaXadrez)captaPeca;
 	}
 	
@@ -144,24 +154,41 @@ public class PartidaXadrez {
 		return false;
 	}
 	
+	private boolean testCheckMate(Cor cor) {
+		if(!testCheck(cor)) {
+			return false;
+		}
+		List<Peca> lista = pecasTabuleiro.stream().filter(x -> ((PecaXadrez)x).getCor() == cor).collect(Collectors.toList());
+		for(Peca p : lista) {
+			boolean[][] mat = p.movPossivel();
+			for(int i=0; i<tabuleiro.getQtdLinhas();i++) {
+				for(int j=0; j<tabuleiro.getQtdColunas();j++) {
+					if(mat[i][j]) {
+						Posicao origem = ((PecaXadrez)p).getPosicaoXadrez().toPosicao();
+						Posicao destino = new Posicao(i,j);
+						Peca pecaCapturada = movimentar(origem, destino);
+						boolean testCheck = testCheck(cor);					
+						desfazer(origem, destino, pecaCapturada);
+						if(!testCheck) {
+							return false;
+						}
+					}
+				}
+			}
+		}
+		return true;
+	}
 	
 	private void novoLocalPeca(char coluna, int linha, PecaXadrez peca) {
 		tabuleiro.localPeca(peca,new PosicaoXadrez(coluna, linha).toPosicao());
 		pecasTabuleiro.add(peca); 
 	}
 	private void setupInicial() {
-		novoLocalPeca('c', 1, new Torre(tabuleiro, Cor.WHITE));
-		novoLocalPeca('c', 2, new Torre(tabuleiro, Cor.WHITE));
-		novoLocalPeca('d', 2, new Torre(tabuleiro, Cor.WHITE));
-		novoLocalPeca('e', 2, new Torre(tabuleiro, Cor.WHITE));
-		novoLocalPeca('e', 1, new Torre(tabuleiro, Cor.WHITE));
-		novoLocalPeca('d', 1, new Rei(tabuleiro, Cor.WHITE));
+		novoLocalPeca('h', 7, new Torre(tabuleiro, Cor.WHITE));
+		novoLocalPeca('d', 1, new Torre(tabuleiro, Cor.WHITE));
+		novoLocalPeca('e', 1, new Rei(tabuleiro, Cor.WHITE));
 
-		novoLocalPeca('c', 7, new Torre(tabuleiro, Cor.BLACK));
-		novoLocalPeca('c', 8, new Torre(tabuleiro, Cor.BLACK));
-		novoLocalPeca('d', 7, new Torre(tabuleiro, Cor.BLACK));
-        novoLocalPeca('e', 7, new Torre(tabuleiro, Cor.BLACK));
-        novoLocalPeca('e', 8, new Torre(tabuleiro, Cor.BLACK));
-        novoLocalPeca('d', 8, new Rei(tabuleiro, Cor.BLACK));
+		novoLocalPeca('b', 8, new Torre(tabuleiro, Cor.BLACK));
+        novoLocalPeca('a', 8, new Rei(tabuleiro, Cor.BLACK));
 	}
 }

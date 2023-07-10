@@ -32,20 +32,18 @@ public class UI {
 	public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
 	public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
 
-	
 	public static void clearScreen() {
 		System.out.print("\033[H\033[2J");
 		System.out.flush();
 	}
-	
-	public static PosicaoXadrez lerPosicaoXadrez (Scanner sc) {
+
+	public static PosicaoXadrez lerPosicaoXadrez(Scanner sc) {
 		try {
 			String s = sc.nextLine();
 			char coluna = s.charAt(0);
 			int row = Integer.parseInt(s.substring(1));
 			return new PosicaoXadrez(coluna, row);
-		}
-		catch (RuntimeException ex) {
+		} catch (RuntimeException ex) {
 			throw new InputMismatchException("Erro! Valores válidos são de a1 até h8");
 		}
 	}
@@ -55,28 +53,35 @@ public class UI {
 		System.out.println();
 		retornaPecaCapturada(capturada);
 		System.out.println();
-		System.out.println("Turno: "+ partidaXadrez.getTurno());
-		System.out.println("Jogador: "+ partidaXadrez.getJogadorAtual());
-		if(partidaXadrez.getCheck()) {
-			System.out.println("CHECK!");
+		System.out.println("Turno: " + partidaXadrez.getTurno());
+		if (!partidaXadrez.getCheckMate()) {
+			System.out.println("Jogador: " + partidaXadrez.getJogadorAtual());
+			if (partidaXadrez.getCheck()) {
+				System.out.println("CHECK!");
+			}
+		}
+		else {
+			System.out.println("C H E C K M A T E!!!");
+			System.out.println("Vencedor: "+ partidaXadrez.getJogadorAtual());
 		}
 	}
+
 	public static void retornaTabuleiro(PecaXadrez[][] pecas) {
 		for (int i = 0; i < pecas.length; i++) {
 			System.out.print((8 - i) + " ");
 			for (int j = 0; j < pecas.length; j++) {
-				retornaPeca(pecas[i][j],false);
+				retornaPeca(pecas[i][j], false);
 			}
 			System.out.println();
 		}
 		System.out.println("  a b c d e f g h");
 	}
-	
+
 	public static void retornaTabuleiro(PecaXadrez[][] pecas, boolean[][] movPossivel) {
 		for (int i = 0; i < pecas.length; i++) {
 			System.out.print((8 - i) + " ");
 			for (int j = 0; j < pecas.length; j++) {
-				retornaPeca(pecas[i][j],movPossivel[i][j]);
+				retornaPeca(pecas[i][j], movPossivel[i][j]);
 			}
 			System.out.println();
 		}
@@ -84,11 +89,11 @@ public class UI {
 	}
 
 	private static void retornaPeca(PecaXadrez peca, boolean colorir) {
-		if(colorir) {
+		if (colorir) {
 			System.out.print(ANSI_BLUE_BACKGROUND);
 		}
 		if (peca == null) {
-			System.out.print("-"+ANSI_RESET);
+			System.out.print("-" + ANSI_RESET);
 		} else {
 			if (peca.getCor() == Cor.WHITE) {
 				System.out.print(ANSI_WHITE + peca + ANSI_RESET);
@@ -98,7 +103,7 @@ public class UI {
 		}
 		System.out.print(" ");
 	}
-	
+
 	private static void retornaPecaCapturada(List<PecaXadrez> capturada) {
 		List<PecaXadrez> white = capturada.stream().filter(x -> x.getCor() == Cor.WHITE).collect(Collectors.toList());
 		List<PecaXadrez> black = capturada.stream().filter(x -> x.getCor() == Cor.BLACK).collect(Collectors.toList());
