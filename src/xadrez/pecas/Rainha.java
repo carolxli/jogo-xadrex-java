@@ -13,7 +13,7 @@ public class Rainha extends PecaXadrez {
 
 	@Override
 	public String toString() {
-		return "RA";
+		return "A";
 	}
 
 	@Override
