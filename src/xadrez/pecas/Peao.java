@@ -70,3 +70,4 @@ public class Peao extends PecaXadrez {
 	}
 
 }
+
