@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import tabuleiroJogo.Peca;
 import tabuleiroJogo.Posicao;
 import tabuleiroJogo.Tabuleiro;
+import xadrez.pecas.Peao;
 import xadrez.pecas.Rei;
 import xadrez.pecas.Torre;
 
@@ -82,7 +83,8 @@ public class PartidaXadrez {
 	}
 	
 	private Peca movimentar(Posicao origem, Posicao destino) {
-		Peca p = tabuleiro.removePeca(origem);
+		PecaXadrez p = (PecaXadrez)tabuleiro.removePeca(origem);
+		p.addContMov();
 		Peca pecaCapturada = tabuleiro.removePeca(destino);
 		tabuleiro.localPeca(p,destino);
 		
@@ -95,7 +97,8 @@ public class PartidaXadrez {
 	}
 	
 	private void desfazer(Posicao origem, Posicao destino, Peca pecaCapturada) {
-		Peca p = tabuleiro.removePeca(destino);
+		PecaXadrez p = (PecaXadrez)tabuleiro.removePeca(destino);
+		p.subtContMov();
 		tabuleiro.localPeca(p,origem);
 		if(pecaCapturada != null) {
 			tabuleiro.localPeca(pecaCapturada, destino);
@@ -184,11 +187,30 @@ public class PartidaXadrez {
 		pecasTabuleiro.add(peca); 
 	}
 	private void setupInicial() {
-		novoLocalPeca('h', 7, new Torre(tabuleiro, Cor.WHITE));
-		novoLocalPeca('d', 1, new Torre(tabuleiro, Cor.WHITE));
+		novoLocalPeca('a', 1, new Torre(tabuleiro, Cor.WHITE));
+		novoLocalPeca('h', 1, new Torre(tabuleiro, Cor.WHITE));
 		novoLocalPeca('e', 1, new Rei(tabuleiro, Cor.WHITE));
-
-		novoLocalPeca('b', 8, new Torre(tabuleiro, Cor.BLACK));
-        novoLocalPeca('a', 8, new Rei(tabuleiro, Cor.BLACK));
+		novoLocalPeca('a', 2, new Peao(tabuleiro, Cor.WHITE));
+		novoLocalPeca('b', 2, new Peao(tabuleiro, Cor.WHITE));
+		novoLocalPeca('c', 2, new Peao(tabuleiro, Cor.WHITE));
+		novoLocalPeca('d', 2, new Peao(tabuleiro, Cor.WHITE));
+		novoLocalPeca('e', 2, new Peao(tabuleiro, Cor.WHITE));
+		novoLocalPeca('f', 2, new Peao(tabuleiro, Cor.WHITE));
+		novoLocalPeca('g', 2, new Peao(tabuleiro, Cor.WHITE));
+		novoLocalPeca('h', 2, new Peao(tabuleiro, Cor.WHITE));
+		
+		
+		
+		novoLocalPeca('a', 8, new Torre(tabuleiro, Cor.BLACK));
+		novoLocalPeca('h', 8, new Torre(tabuleiro, Cor.BLACK));
+		novoLocalPeca('e', 8, new Rei(tabuleiro, Cor.BLACK));
+		novoLocalPeca('a', 7, new Peao(tabuleiro, Cor.BLACK));
+		novoLocalPeca('b', 7, new Peao(tabuleiro, Cor.BLACK));
+		novoLocalPeca('c', 7, new Peao(tabuleiro, Cor.BLACK));
+		novoLocalPeca('d', 7, new Peao(tabuleiro, Cor.BLACK));
+		novoLocalPeca('e', 7, new Peao(tabuleiro, Cor.BLACK));
+		novoLocalPeca('f', 7, new Peao(tabuleiro, Cor.BLACK));
+		novoLocalPeca('g', 7, new Peao(tabuleiro, Cor.BLACK));
+		novoLocalPeca('h', 7, new Peao(tabuleiro, Cor.BLACK));
 	}
 }
