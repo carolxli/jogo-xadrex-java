@@ -1,4 +1,4 @@
-# README - Jogo de Xadrez em Java
+# Jogo de Xadrez em Java
 
 Este é um jogo de xadrez desenvolvido em Java utilizando todos os princípios e paradigmas da orientação a objetos. O jogo foi criado com o auxílio do professor Nelio Alves no curso de Java da plataforma Udemy.
 
