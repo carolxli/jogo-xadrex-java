@@ -34,6 +34,12 @@ public class Program {
 				if(captaPeca != null) {
 					capturada.add(captaPeca);
 				}
+				
+				if(partidaXadrez.getPromocao()!= null) {
+					System.out.print("[A]Rainha | [B]Bispo | [C]Cavalo | [T]Torre: ");
+					String tipo = sc.nextLine();
+					partidaXadrez.trocaPecaPromo(tipo);
+				}
 			}catch(XadrezException ex) {
 				System.out.println(ex.getMessage());
 				sc.nextLine();
